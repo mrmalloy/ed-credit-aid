@@ -86,7 +86,7 @@ page_sidebar(
   layout_columns(height = 400,
     
               card(card_header(h5(strong("Option 1 – Baseline Values"))),
-                   textOutput("expenses1_tp")
+                   h6(uiOutput("option1"))
                   ),
               card(card_header(h5(strong("Option 2 – Maximum Expenses")))),
               card(card_header(h5(strong("Option 3 – Variable Expenses"))))
