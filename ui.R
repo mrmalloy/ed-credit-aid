@@ -5,14 +5,14 @@ page_sidebar(
   
   theme = bs_theme(navbar_bg = "#956087"),
   
-  title = h3(strong("Education Credits Assistor")),
+  title = h3(strong("Education Credits Aid")),
   
   sidebar = sidebar(width = "25%",
                     bg = "#956087",
                     includeHTML("sidebar_text.html"),
                     img(src = "logo.png",
-                        width = 384,
-                        height = 200,
+                        width = "17%",
+                        height = "auto",
                         style = "position: fixed; bottom: 40px; left: 48px;")
                     ),
                   
@@ -60,10 +60,11 @@ page_sidebar(
                               ),
 
                   br(),
-                  br(),
                   
                   actionButton("enter",
                                "Generate Taxslayer Entry Values",
+                               icon("calculator"),
+                               style ="color: #fff; background-color: #00B0B8;",
                                class = "btn-lg")
                   
                   ),  ## end div
@@ -74,7 +75,7 @@ page_sidebar(
                             label = "Taxpayer Name"),
                   textInput("taxYr",
                             "Tax Year"),
-                  h6("When you have completed this form, click here to print your results.")
+                  h6("When you have completed this form, click here to print your results. Print 2 copies, one for the client's records and one to staple with P+P paperwork.")
                   )
               
                         )  ## end layout columns
@@ -86,10 +87,25 @@ page_sidebar(
   layout_columns(height = 400,
     
               card(card_header(h5(strong("Option 1 – Baseline Values"))),
-                   h6(uiOutput("option1"))
+                   h6(uiOutput("option1")),
+                   h6("Enter the above amounts into TaxSlayer, and record refund amounts:"),
+                   textInput("opt1_fed",
+                             "Federal"),
+                   textInput("opt1_m1",
+                             "M1"),
+                   textInput("opt1_m1pr",
+                             "M1PR"),
+                   
                   ),
               card(card_header(h5(strong("Option 2 – Maximum Expenses"))),
-                   h6(uiOutput("option2"))
+                   h6(uiOutput("option2")),
+                   h6("Enter the above amounts into TaxSlayer, and record refund amounts:"),
+                   textInput("opt2_fed",
+                             "Federal"),
+                   textInput("opt2_m1",
+                             "M1"),
+                   textInput("opt2_m1pr",
+                             "M1PR"),
                    ),
               card(card_header(h5(strong("Option 3 – Variable Expenses"))))
     

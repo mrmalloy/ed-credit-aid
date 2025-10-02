@@ -25,13 +25,13 @@ option1_exp <- eventReactive(input$enter, {
 
 option1_taxschol <- eventReactive(input$enter, {
   
-  if (input$box1 > input$box5) {
+  if (input$box1 + input$otherExp > input$box5) {
     
     "N/A"
     
   } else {
     
-    input$box5 - input$box1
+    input$box5 - (input$box1 + input$otherExp)
     
   }
   
@@ -44,13 +44,13 @@ option1_nontaxschol <- eventReactive(input$enter, {
     
     0
     
-  } else if (input$box1 > input$box5) {
+  } else if (input$box1 + input$otherExp > input$box5) {
     
     input$box5
     
-  } else if (input$box5 > input$box1) {
+  } else if (input$box5 > input$box1 + input$otherExp) {
     
-    input$box1
+    input$box1 + input$otherExp
     
   }
   
@@ -76,7 +76,7 @@ option2_taxschol <- eventReactive(input$enter, {
   if(input$box1 < 4000 & input$box5 >= input$box1) {
 
     
-    input$box1
+    input$box1 + input$otherExp + option1_taxschol()
     
 
   } else if (input$box1 > 4000 & input$box1 > input$box5) {
@@ -88,9 +88,9 @@ option2_taxschol <- eventReactive(input$enter, {
     
     input$box5
     
-  } else if (input$box5 - input$box1 > 4000){
+  } else  { #if (input$box5 - input$box1 > 4000) {
     
-    (input$box5 - input$box1) + option2_exp()
+    (input$box5 - input$box1) + input$otherExp
     
   }
 
