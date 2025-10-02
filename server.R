@@ -5,16 +5,20 @@ library(shiny)
 function(input, output, session) {
   
   
-init_diff <- eventReactive(input$enter, {
-  
-  (input$box1 + input$otherExp) - input$box5 
-  
-})
-  
 option1_exp <- eventReactive(input$enter, {
   
+  if (input$box1 < input$box5) {
+    
+    0
   
-  input$box1 + input$otherExp
+  } else {
+    
+    
+   (input$box1 + input$otherExp) - input$box5
+    
+        
+  }
+
   
 })
 
@@ -27,51 +31,82 @@ option1_taxschol <- eventReactive(input$enter, {
     
   } else {
     
-    as.character(paste0("$", input$box5 - input$box1))
+    input$box5 - input$box1
     
   }
   
   
 })
 
+option1_nontaxschol <- eventReactive(input$enter, {
+  
+  if(input$box5 == 0) {
+    
+    0
+    
+  } else if (input$box1 > input$box5) {
+    
+    input$box5
+    
+  } else if (input$box5 > input$box1) {
+    
+    input$box1
+    
+  }
+  
+  
+})
 
 option2_exp <- eventReactive(input$enter, {
   
-  if(option1_exp() < 4000) {
+  if(input$box1 + input$otherExp < 4000) {
     
-    option1_exp()
+    input$box1 + input$otherExp
     
     } else {
     
-    4000
+   4000
     
   }
   
 })
 
 option2_taxschol <- eventReactive(input$enter, {
-  
+
   if(input$box1 < 4000 & input$box5 >= input$box1) {
+
     
-  
-  } else if  {
+    input$box1
     
+
+  } else if (input$box1 > 4000 & input$box1 > input$box5) {
+
+
+    4000 - ((input$box1 + input$otherExp) - input$box5)
+    
+  } else if (input$box5 < 4000) {
+    
+    input$box5
+    
+  } else if (input$box5 - input$box1 > 4000){
+    
+    (input$box5 - input$box1) + option2_exp()
     
   }
-  
-  
+
+
 })
 
 
-option2_taxschol <- eventReactive(input$enter, {
+option2_nontaxschol <- eventReactive(input$enter, {
   
-  if (input$box1 > input$box5) {
+  if(option2_taxschol() == input$box5) {
     
-    "N/A"
+    0
     
   } else {
     
-    as.character(paste0("$", input$box5 - input$box1))
+    input$box5 - option2_taxschol()
     
   }
   
@@ -84,10 +119,11 @@ observeEvent(input$enter, {
     
     HTML(
       sprintf("<p><b>Qualified Expenses:</b> $%s</p>
-              <p><b>Taxable Scholarship:</b> %s</p>
-              <p><b>Nontaxable Scholarship:</b> N/A</p>",
+              <p><b>Taxable Scholarship:</b> $%s</p>
+              <p><b>Nontaxable Scholarship:</b> $%s</p>",
               as.character(option1_exp()),
-              as.character(option1_taxschol())
+              as.character(option1_taxschol()),
+              as.character(option1_nontaxschol())
                 
              )
         )
@@ -96,7 +132,7 @@ observeEvent(input$enter, {
     
    output$option2 <- renderUI({
      
-     if (init_diff() >= 4000)  {
+     if (option1_exp() >= 4000)  {
        
        HTML(
          sprintf(
@@ -104,12 +140,21 @@ observeEvent(input$enter, {
          )
        )
        
-     }  else {
+     }  else if (input$box5 == 0) {
+       
+       HTML(
+         sprintf(
+           "No scholarship to reclassify - use option 1"
+         )
+       )
+       
+       
+     } else {
        
        HTML(
          sprintf("<p><b>Qualified Expenses:</b> $%s</p>
-                  <p><b>Taxable Scholarship:</b> %s</p>
-                  <p><b>Nontaxable Scholarship:</b> N/A</p>",
+                  <p><b>Taxable Scholarship:</b> $%s</p>
+                  <p><b>Nontaxable Scholarship:</b> $%s</p>",
                   as.character(option2_exp()),
                   as.character(option2_taxschol()),
                   as.character(option2_nontaxschol())

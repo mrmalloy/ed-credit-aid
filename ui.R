@@ -88,7 +88,9 @@ page_sidebar(
               card(card_header(h5(strong("Option 1 – Baseline Values"))),
                    h6(uiOutput("option1"))
                   ),
-              card(card_header(h5(strong("Option 2 – Maximum Expenses")))),
+              card(card_header(h5(strong("Option 2 – Maximum Expenses"))),
+                   h6(uiOutput("option2"))
+                   ),
               card(card_header(h5(strong("Option 3 – Variable Expenses"))))
     
                 )
